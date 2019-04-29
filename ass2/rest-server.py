@@ -43,6 +43,54 @@ print("loaded extracted_features")
 #==============================================================================================================================
 
         
+@app.route('/choose_cata',methods=['GET','POST'])
+def choose_cata():
+    print('choose cata')
+    global image_list
+    candidata = []
+    if(request.method=='POST'):
+        catalog_chosen = str(request.data,encoding='utf-8')
+        print(catalog_chosen)
+        with open(os.getcwd()+"/database/tags/"+ catalog_chosen+'.txt','r') as f:
+            lines = f.readlines()
+            for number in lines:
+                candidata.append(int(number))
+        #print(candidata[10])
+        #print('original'+ str(image_list))
+        for img in image_list:
+            img_number= img[10:-4]
+            #print(img_number)
+            if(int(img_number) not in candidata):
+                source = img.replace("/result\\im",r'\static\result\im',1)
+                os.remove(os.getcwd()+source)
+                image_list.remove(img)
+        #print('new'+ str(image_list))
+        image_path = "/result"
+        result = 'static/result'
+        image_list = [os.path.join(image_path, file) for file in os.listdir(result)
+                              if not file.startswith('.')]
+        answer_list = []
+        for dirs in image_list:
+            answer_list.append(dirs.replace("/result\\im",r'/result\im',1))
+        while(len(answer_list)%9!=0):
+            answer_list.append('None')
+        #print(answer_list)
+        images = {
+			'image0':answer_list[0],
+            'image1':answer_list[1],	
+			'image2':answer_list[2],	
+			'image3':answer_list[3],	
+			'image4':answer_list[4],	
+			'image5':answer_list[5],	
+			'image6':answer_list[6],	
+			'image7':answer_list[7],	
+			'image8':answer_list[8]
+		}
+        print(images)				
+        return jsonify(images)
+
+
+
 
 
 
@@ -64,15 +112,15 @@ def show_favorite():
             answer_list.append('None')
         #print(answer_list)
         images = {
-			'image0':answer_list[current_position + 0],
-            'image1':answer_list[current_position + 1],	
-			'image2':answer_list[current_position + 2],	
-			'image3':answer_list[current_position + 3],	
-			'image4':answer_list[current_position + 4],	
-			'image5':answer_list[current_position + 5],	
-			'image6':answer_list[current_position + 6],	
-			'image7':answer_list[current_position + 7],	
-			'image8':answer_list[current_position + 8]
+			'image0':answer_list[0],
+            'image1':answer_list[1],	
+			'image2':answer_list[2],	
+			'image3':answer_list[3],	
+			'image4':answer_list[4],	
+			'image5':answer_list[5],	
+			'image6':answer_list[6],	
+			'image7':answer_list[7],	
+			'image8':answer_list[8]
 		    }
         print(images)				
         return jsonify(images)
@@ -92,15 +140,15 @@ def privious_favo():
     if request.method == 'POST':
         if(current_position == 0):
             images = {
-			'image0':answer_list[current_position + 0],
-            'image1':answer_list[current_position + 1],	
-			'image2':answer_list[current_position + 2],	
-			'image3':answer_list[current_position + 3],	
-			'image4':answer_list[current_position + 4],	
-			'image5':answer_list[current_position + 5],	
-			'image6':answer_list[current_position + 6],	
-			'image7':answer_list[current_position + 7],	
-			'image8':answer_list[current_position + 8]
+			'image0':answer_list[0],
+            'image1':answer_list[1],	
+			'image2':answer_list[2],	
+			'image3':answer_list[3],	
+			'image4':answer_list[4],	
+			'image5':answer_list[5],	
+			'image6':answer_list[6],	
+			'image7':answer_list[7],	
+			'image8':answer_list[8]
 		    }
             print(current_position)
             print(images)				
@@ -111,15 +159,15 @@ def privious_favo():
         current_position = max(0,current_position)
         print(current_position)
         images = {
-			'image0':answer_list[current_position + 0],
-            'image1':answer_list[current_position + 1],	
-			'image2':answer_list[current_position + 2],	
-			'image3':answer_list[current_position + 3],	
-			'image4':answer_list[current_position + 4],	
-			'image5':answer_list[current_position + 5],	
-			'image6':answer_list[current_position + 6],	
-			'image7':answer_list[current_position + 7],	
-			'image8':answer_list[current_position + 8]
+			'image0':answer_list[0],
+            'image1':answer_list[1],	
+			'image2':answer_list[2],	
+			'image3':answer_list[3],	
+			'image4':answer_list[4],	
+			'image5':answer_list[5],	
+			'image6':answer_list[6],	
+			'image7':answer_list[7],	
+			'image8':answer_list[8]
 		    }
         
         print(images)				
@@ -140,15 +188,15 @@ def next_favo():
     if request.method == 'POST':
         if(len(favorite_list) < current_position):
             images = {
-			'image0':answer_list[current_position + 0],
-            'image1':answer_list[current_position + 1],	
-			'image2':answer_list[current_position + 2],	
-			'image3':answer_list[current_position + 3],	
-			'image4':answer_list[current_position + 4],	
-			'image5':answer_list[current_position + 5],	
-			'image6':answer_list[current_position + 6],	
-			'image7':answer_list[current_position + 7],	
-			'image8':answer_list[current_position + 8]
+			'image0':answer_list[0],
+            'image1':answer_list[1],	
+			'image2':answer_list[2],	
+			'image3':answer_list[3],	
+			'image4':answer_list[4],	
+			'image5':answer_list[5],	
+			'image6':answer_list[6],	
+			'image7':answer_list[7],	
+			'image8':answer_list[8]
 		    }
             print(current_position)
             print(images)			
@@ -159,15 +207,15 @@ def next_favo():
         #print(answer_list)        
         print(current_position)
         images = {
-			'image0':answer_list[current_position + 0],
-            'image1':answer_list[current_position + 1],	
-			'image2':answer_list[current_position + 2],	
-			'image3':answer_list[current_position + 3],	
-			'image4':answer_list[current_position + 4],	
-			'image5':answer_list[current_position + 5],	
-			'image6':answer_list[current_position + 6],	
-			'image7':answer_list[current_position + 7],	
-			'image8':answer_list[current_position + 8]
+			'image0':answer_list[0],
+            'image1':answer_list[1],	
+			'image2':answer_list[2],	
+			'image3':answer_list[3],	
+			'image4':answer_list[4],	
+			'image5':answer_list[5],	
+			'image6':answer_list[6],	
+			'image7':answer_list[7],	
+			'image8':answer_list[8]
 		    }
         print(images)
         return jsonify(images)
@@ -249,7 +297,8 @@ def upload_img():
 			'image6':image_list[6],	
 			'image7':image_list[7],	
 			'image8':image_list[8]
-		      }				
+		      }
+            print(images)				
             return jsonify(images)
 
 
