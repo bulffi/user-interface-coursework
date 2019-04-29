@@ -19,21 +19,40 @@
 <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
 
+<style>
+    		#report{
+			background:#333;
+			color:#fff;
+			padding:20px;
+			text-align: center;
+			border-bottom: 4px #000 solid;
+			margin-bottom: 10px;
+		    }
+
+            #choose_preference{
+			background:#333;
+			color:#fff;
+			padding:20px;
+			text-align: center;
+			border-bottom: 4px #000 solid;
+			margin-bottom: 10px;
+		    }
+
+</style>
+
 </head>
 
-<body style="background: white;">
+<body style="background: white";>
 
     <div class="navbar">
         <div class="navbar-inner">
             <h1 class="text-center" style="color:black;"><b>IMAGE SEARCH DEMO </b>&nbsp;&nbsp;&nbsp;<a class="navbar-brand" href="">
-                <img src="/images/logo.svg" style="height:40px;" ></a>
-	        </h1>
+                             <img src="/images/logo.svg" style="height:40px;" ></a>
+	    </h1>
 	    
         </div>
     </div>
-    <div>
-        <br></br>
-        <br></br>
+    <div><br></br><br></br>
     </div>
 	
 
@@ -41,25 +60,52 @@
 
     
     <div id="main" class="container">
-            <table class="table" style="background: white;border: 1px solid beige;box-shadow: 3px 5px 15px 0px rgba(0, 0, 0, 0.2), 3px 5px 15px 0 rgba(0, 0, 0, 0.19);
-            ">
-                         <tr style="background: lightgrey;"><td><b>Chose your file to upload</b></td><td><b></b></td></tr>
-                        <tr><td><form method=post enctype=multipart/form-data>
-                                    <!--<input data-bind="value: title" type="text" id="inputTask" placeholder="Path to the image" style="width: 150px;">-->
-                        <input type="file" name="file" required />
-                        <input type=submit value ="Search!" onclick="fun()"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                </form></td><td><b></b></td></tr>
+        <table class="table" style="background: white;border: 1px solid beige;box-shadow: 3px 5px 15px 0px rgba(0, 0, 0, 0.2), 3px 5px 15px 0 rgba(0, 0, 0, 0.19);
+">
+             <tr style="background: lightgrey;"><td><b>Chose your file to upload</b></td><td><b></b></td></tr>
+            <tr><td>
+            <form method=post id="handin" enctype=multipart/form-data>
+                        <!--<input data-bind="value: title" type="text" id="inputTask" placeholder="Path to the image" style="width: 150px;">-->
+            <input type="file" name="file" id='image_upload' onchange="changepreview()" required />
+            <img src="" id='preview'>
             
+			<input type=submit value ="Search!" onclick="fun()"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        </form></td><td><b></b></td></tr>
+            
+            <form method="POST" id="show_favo">
+                    <input type="submit" id="show_favorite" value="Show my Favorite!" onclick="show_my_favorite()">
+            </form>
+            <form method="POST" id="next_favo">
+                    <input type="submit" id="next_favorite" value="Next favorite!" onclick="next()">
+            </form>
+            <form method="POST" id="pre_favo">
+                    <input type="submit" id="privious_favorite" value="Privious favorite!" onclick="previous()">
+            </form>
                 
                 <tr id="row1" style="display:none;"><td><a href=""><button id="clear" style="display:none;">Clear</button></a></td><td></td>
                 
             </tr>
         </table>
+        
+        
     </div>
     <center>
-        <img id="load" src="/images/ajax-loader.gif" style="height:100px;weight:100px;display:none;" >
+    <img id="load" src="/images/ajax-loader.gif" style="height:100px;weight:100px;display:none;" >
     </center>
+    <div id="report" class="report"style="display:none;">
+        <p id="general"></p>
+        <p id="im_0"></p>
+        <p id="im_1"></p>
+        <p id="im_2"></p>
+        <p id="im_3"></p>
+        <p id="im_4"></p>
+        <p id="im_5"></p>
+        <p id="im_6"></p>
+        <p id="im_7"></p>
+        <p id="im_8"></p>
+
+    </div>
     <div id="main" class="container">
        <table id="table" class="table" style="background: white; border: 1px ;display:none;" ><tbody>
         <tr><td style="
@@ -307,44 +353,251 @@
 
 </div>
 	
-
+<div id="choose_preference" style="display:none;">
+    <p>which picture do you want to store?</p>
+    <form id="choose_favo">
+        <p><input type="checkbox" name="favorite" value= 1 />No.1</p>
+        <p><input type="checkbox" name="favorite" value= 2 />No.2</p>    
+        <p><input type="checkbox" name="favorite" value= 3 />No.3</p>    
+        <p><input type="checkbox" name="favorite" value= 4 />No.4</p>    
+        <p><input type="checkbox" name="favorite" value= 5 />No.5</p>    
+        <p><input type="checkbox" name="favorite" value= 6 />No.6</p> 
+        <p><input type="checkbox" name="favorite" value= 7 />No.7</p>
+        <p><input type="checkbox" name="favorite" value= 8 />No.8</p>
+        <p><input type="checkbox" name="favorite" value= 9/>No.9 </p>   
+        <p><input id="submit_favo" type="button" value="Add to favorite!"  /></p>
+    </form>
+    <p id="status"></p>
+</div>
 
 
 
     <script type="text/javascript">
 
-        function loadimage(){
-            let filereader = new FileReader();
-            let file = document.getElementById('image_to_comp').files[0];
-            filereader.readAsDataURL(file);
-            filereader.onload = function(e){
-                document.getElementById('img_preview').src = this.result;
-            }
+    function changepreview(){
+        var filereader= new FileReader();
+        var file=document.getElementById('image_upload').files[0];
+        filereader.readAsDataURL(file);
+        filereader.onload=function  (e) {
+            document.getElementById('preview').src=this.result;
         }
+    }
+    previous = function(){
+        $('#load').show();
+                $("form#pre_favo").submit(function(evt){	 
+                 //$('#loader-icon').show(); 
+                                 
+                 evt.preventDefault();
+                 
+                         //$('#loader-icon').show();
+                      var formData = new FormData($(this)[0]);
+                  
+                    $.ajax({
+                        url: 'privious_favo',
+                         type: 'POST',
+                        data: formData,
+                        //async: false,
+                        cache: false,
+                        contentType: false,
+                        enctype: 'multipart/form-data',
+                        processData: false,
+                 
+                        success: function (response) {
+                  $('#load').hide();
+                  $('#row1').show();
+                   //$('#clear').show();
+                           //console.log(response[1]);
+                       //document.getElementById("predictedResult").innerHTML= response; 
+                           document.getElementById("img0").src = response.image0;
+                  document.getElementById("img1").src = response.image1;
+                          document.getElementById("img2").src = response.image2;
+                          document.getElementById("img3").src = response.image3;
+                           document.getElementById("img4").src = response.image4;
+                           document.getElementById("img5").src = response.image5;
+                           document.getElementById("img6").src = response.image6;
+                           document.getElementById("img7").src = response.image7;
+                           document.getElementById("img8").src = response.image8;
+                           $('#table').show();
+                    $('#clear').show();
+                    $('#report').show();
+                           
+                         $('#general').html('Your Favorite Images are listed below');
+                         $('#im_0').html(response.image0);
+                         $('#im_1').html(response.image1);
+                         $('#im_2').html(response.image2);
+                         $('#im_3').html(response.image3);
+                         $('#im_4').html(response.image4);
+                         $('#im_5').html(response.image5);
+                         $('#im_6').html(response.image6);
+                         $('#im_7').html(response.image7);
+                         $('#im_8').html(response.image8);
+         
+                         $('#choose_preference').hide();
+                     
+                        }
+                    });
+            return false;
+          })};
 
-
+    next = function(){
+        $('#load').show();
+                
+            $("form#next_favo").submit(function(evt){	 
+             //$('#loader-icon').show(); 
+                             
+             evt.preventDefault();
+             
+                     //$('#loader-icon').show();
+                  var formData = new FormData($(this)[0]);
+              
+                $.ajax({
+                    url: 'next_favo',
+                     type: 'POST',
+                    data: formData,
+                    //async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+             
+                    success: function (response) {
+              $('#load').hide();
+              $('#row1').show();
+               //$('#clear').show();
+                       //console.log(response[1]);
+                   //document.getElementById("predictedResult").innerHTML= response; 
+                       document.getElementById("img0").src = response.image0;
+              document.getElementById("img1").src = response.image1;
+                      document.getElementById("img2").src = response.image2;
+                      document.getElementById("img3").src = response.image3;
+                       document.getElementById("img4").src = response.image4;
+                       document.getElementById("img5").src = response.image5;
+                       document.getElementById("img6").src = response.image6;
+                       document.getElementById("img7").src = response.image7;
+                       document.getElementById("img8").src = response.image8;
+                       $('#table').show();
+                $('#clear').show();
+                $('#report').show();
+                       
+                     $('#general').html('Your Favorite Images are listed below');
+                     $('#im_0').html(response.image0);
+                     $('#im_1').html(response.image1);
+                     $('#im_2').html(response.image2);
+                     $('#im_3').html(response.image3);
+                     $('#im_4').html(response.image4);
+                     $('#im_5').html(response.image5);
+                     $('#im_6').html(response.image6);
+                     $('#im_7').html(response.image7);
+                     $('#im_8').html(response.image8);
+     
+                     $('#choose_preference').hide();
+                 
+                    }
+                });
+        return false;
+      })};
+    
+    show_my_favorite =  function (){
+            $('#load').show();
+                
+            $("form#show_favo").submit(function(evt){	 
+             //$('#loader-icon').show(); 
+                             
+             evt.preventDefault();
+             
+                     //$('#loader-icon').show();
+                  var formData = new FormData($(this)[0]);
+              
+                $.ajax({
+                    url: 'loadFavotite',
+                     type: 'POST',
+                    data: formData,
+                    //async: false,
+                    cache: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+             
+                    success: function (response) {
+              $('#load').hide();
+              $('#row1').show();
+               //$('#clear').show();
+                       //console.log(response[1]);
+                   //document.getElementById("predictedResult").innerHTML= response; 
+                       document.getElementById("img0").src = response.image0;
+              document.getElementById("img1").src = response.image1;
+                      document.getElementById("img2").src = response.image2;
+                      document.getElementById("img3").src = response.image3;
+                       document.getElementById("img4").src = response.image4;
+                       document.getElementById("img5").src = response.image5;
+                       document.getElementById("img6").src = response.image6;
+                       document.getElementById("img7").src = response.image7;
+                       document.getElementById("img8").src = response.image8;
+                       $('#table').show();
+                $('#clear').show();
+                $('#report').show();
+                       
+                     $('#general').html('Your Favorite Images are listed below');
+                     $('#im_0').html(response.image0);
+                     $('#im_1').html(response.image1);
+                     $('#im_2').html(response.image2);
+                     $('#im_3').html(response.image3);
+                     $('#im_4').html(response.image4);
+                     $('#im_5').html(response.image5);
+                     $('#im_6').html(response.image6);
+                     $('#im_7').html(response.image7);
+                     $('#im_8').html(response.image8);
+     
+                     $('#choose_preference').hide();
+                 
+                    }
+                });
+        return false;
+      })};
 
 	function myFunction(){
 
-
 	document.getElementById("predictedResult").innerHTML= "";
-	    $('#clear').hide();
+	$('#clear').hide();
 	}
+		function fun(){
 
-	function fun(){
+            document.getElementById('submit_favo').onclick=function() {     
+            var arr = new Array();                
+            var items = document.getElementsByName("favorite");                 
+            for (i = 0; i < items.length; i++) {                    
+                if (items[i].checked) {                        
+                    arr.push(items[i].value);               
+                }                
+            }                 
+             $.ajax({
+                url: 'add_favorite',
+                type: 'POST',
+                data: arr.join('|'),
+                dataType:'text',
+                //async: false,
+                cache: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                
+                success:function(request){
+                    $('status').html('Saved!');
+                }
+            })
+        }
 
 		$('#load').show();
                 
-   		$("form").submit(function(evt){	 
+   		$("form#handin").submit(function(evt){	 
 		//$('#loader-icon').show(); 
                		 
-		 evt.preventDefault();
+		evt.preventDefault();
 		
                 //$('#loader-icon').show();
-     	 var formData = new FormData($(this)[0]);
-         console.log(formData);
+     		var formData = new FormData($(this)[0]);
 		 
-   		 $.ajax({
+   		$.ajax({
       		 url: 'imgUpload',
        		 type: 'POST',
       		 data: formData,
@@ -355,39 +608,37 @@
       		 processData: false,
 		
       		 success: function (response) {
-		        $('#load').hide();
-		        $('#row1').show();
-                console.log(response);
-		        //$('#clear').show();
-                //console.log(response[1]);
-        	    //document.getElementById("predictedResult").innerHTML= response; 
-                document.getElementById("img0").src = response.image0;
-		        document.getElementById("img1").src = response.image1;
-                document.getElementById("img2").src = response.image2;
-                document.getElementById("img3").src = response.image3;
-                document.getElementById("img4").src = response.image4;
-                document.getElementById("img5").src = response.image5;
-                document.getElementById("img6").src = response.image6;
-                document.getElementById("img7").src = response.image7;
-                document.getElementById("img8").src = response.image8;
-                $('#table').show();
-		        $('#clear').show();
+		 $('#load').hide();
+		 $('#row1').show();
+		  //$('#clear').show();
+                  //console.log(response[1]);
+        	  //document.getElementById("predictedResult").innerHTML= response; 
+                  document.getElementById("img0").src = response.image0;
+		 document.getElementById("img1").src = response.image1;
+                 document.getElementById("img2").src = response.image2;
+                 document.getElementById("img3").src = response.image3;
+                  document.getElementById("img4").src = response.image4;
+                  document.getElementById("img5").src = response.image5;
+                  document.getElementById("img6").src = response.image6;
+                  document.getElementById("img7").src = response.image7;
+                  document.getElementById("img8").src = response.image8;
+                  $('#table').show();
+		   $('#clear').show();
+           $('#report').show();
                   
-                
-               /* $('#general').html('FILE PATH:');
-                $('#img0').html(response.image0);
-                $('#img1').html(response.image1);
-                $('#img2').html(response.image2);
-                $('#img3').html(response.image3);
-                $('#img4').html(response.image4);
-                $('#img5').html(response.image5);
-                $('#img6').html(response.image6);
-                $('#img7').html(response.image7);
-                $('#img8').html(response.image8);
-                */
+                $('#general').html('The file selected for your search(total 9)');
+                $('#im_0').html(response.image0);
+                $('#im_1').html(response.image1);
+                $('#im_2').html(response.image2);
+                $('#im_3').html(response.image3);
+                $('#im_4').html(response.image4);
+                $('#im_5').html(response.image5);
+                $('#im_6').html(response.image6);
+                $('#im_7').html(response.image7);
+                $('#im_8').html(response.image8);
 
-
- 
+                $('#choose_preference').show();
+            
       		 }
    		});
    return false;

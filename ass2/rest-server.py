@@ -41,6 +41,166 @@ print("loaded extracted_features")
 #  This function is used to do the image search/image retrieval
 #                                                                                                                              
 #==============================================================================================================================
+
+        
+
+
+
+@app.route('/loadFavotite',methods=['GET','POST'])
+def show_favorite():
+    global favorite_list
+    global current_position
+    current_position = 0
+    favorite_list = []
+    print('show favorite')
+    if not gfile.Exists('./static/favorite'):
+        return 'nothing'
+    if request.method == 'POST':
+        favorite_list = os.listdir(os.getcwd() + r'\static\favorite')
+        answer_list = []
+        for dirs in favorite_list:
+            answer_list.append(os.path.join("/favorite",dirs))
+        while(len(answer_list)%9!=0):
+            answer_list.append('None')
+        #print(answer_list)
+        images = {
+			'image0':answer_list[current_position + 0],
+            'image1':answer_list[current_position + 1],	
+			'image2':answer_list[current_position + 2],	
+			'image3':answer_list[current_position + 3],	
+			'image4':answer_list[current_position + 4],	
+			'image5':answer_list[current_position + 5],	
+			'image6':answer_list[current_position + 6],	
+			'image7':answer_list[current_position + 7],	
+			'image8':answer_list[current_position + 8]
+		    }
+        print(images)				
+        return jsonify(images)
+        
+@app.route('/privious_favo',methods=['GET','POST'])
+def privious_favo():
+    global favorite_list
+    global current_position
+    print('privious favo')
+    if not gfile.Exists('./static/favorite'):
+        return 'nothing'        
+    answer_list = []
+    for dirs in favorite_list:
+        answer_list.append(os.path.join("/favorite",dirs))
+    while(len(answer_list)%9!=0):
+        answer_list.append('None')
+    if request.method == 'POST':
+        if(current_position == 0):
+            images = {
+			'image0':answer_list[current_position + 0],
+            'image1':answer_list[current_position + 1],	
+			'image2':answer_list[current_position + 2],	
+			'image3':answer_list[current_position + 3],	
+			'image4':answer_list[current_position + 4],	
+			'image5':answer_list[current_position + 5],	
+			'image6':answer_list[current_position + 6],	
+			'image7':answer_list[current_position + 7],	
+			'image8':answer_list[current_position + 8]
+		    }
+            print(current_position)
+            print(images)				
+            return jsonify(images)
+    
+        #print(answer_list)
+        current_position -= 9
+        current_position = max(0,current_position)
+        print(current_position)
+        images = {
+			'image0':answer_list[current_position + 0],
+            'image1':answer_list[current_position + 1],	
+			'image2':answer_list[current_position + 2],	
+			'image3':answer_list[current_position + 3],	
+			'image4':answer_list[current_position + 4],	
+			'image5':answer_list[current_position + 5],	
+			'image6':answer_list[current_position + 6],	
+			'image7':answer_list[current_position + 7],	
+			'image8':answer_list[current_position + 8]
+		    }
+        
+        print(images)				
+        return jsonify(images)
+
+@app.route('/next_favo',methods=['GET','POST'])
+def next_favo():
+    global favorite_list
+    global current_position
+    print('next favo')
+    if not gfile.Exists('./static/favorite'):
+        return 'nothing'
+    answer_list = []
+    for dirs in favorite_list:
+        answer_list.append(os.path.join("/favorite",dirs))
+    while(len(answer_list)%9!=0):
+        answer_list.append('None')
+    if request.method == 'POST':
+        if(len(favorite_list) < current_position):
+            images = {
+			'image0':answer_list[current_position + 0],
+            'image1':answer_list[current_position + 1],	
+			'image2':answer_list[current_position + 2],	
+			'image3':answer_list[current_position + 3],	
+			'image4':answer_list[current_position + 4],	
+			'image5':answer_list[current_position + 5],	
+			'image6':answer_list[current_position + 6],	
+			'image7':answer_list[current_position + 7],	
+			'image8':answer_list[current_position + 8]
+		    }
+            print(current_position)
+            print(images)			
+            return jsonify(images)
+
+        current_position += 9
+        current_position = min((len(favorite_list)//9)*9 ,current_position)				
+        #print(answer_list)        
+        print(current_position)
+        images = {
+			'image0':answer_list[current_position + 0],
+            'image1':answer_list[current_position + 1],	
+			'image2':answer_list[current_position + 2],	
+			'image3':answer_list[current_position + 3],	
+			'image4':answer_list[current_position + 4],	
+			'image5':answer_list[current_position + 5],	
+			'image6':answer_list[current_position + 6],	
+			'image7':answer_list[current_position + 7],	
+			'image8':answer_list[current_position + 8]
+		    }
+        print(images)
+        return jsonify(images)
+
+@app.route('/add_favorite',methods=['GET','POST'])
+
+def add_favorite():
+    print("add favorite")
+    if not gfile.Exists('./static/result/favorite'):
+        os.makedirs('./static/result/favorite')
+    
+    if request.method == 'POST':
+        #print(request.data)
+        favorite_number = str(request.data,encoding='utf-8').split('|')
+        favo_list = []
+        if '9/' in favorite_number:
+            favorite_number.remove('9/')
+            favorite_number.append('9')
+        for num_str in favorite_number:
+            favo_list.append(int(num_str))
+        #print(image_list)
+        #print(os.getcwd())
+        for num in favo_list:
+            source = image_list[num-1].replace("/result\\im",r'\static\result\im',1)
+            shutil.copy(os.getcwd()+source , os.getcwd()+r'\static\favorite')
+            #os.popen('copy '+source +' '+'./static/favorite')
+            #mycopyfile(source,os.getcwd()+r'\static\favorite')
+
+
+        return 'nothing'
+
+
+
 @app.route('/imgUpload', methods=['GET', 'POST'])
 #def allowed_file(filename):
 #    return '.' in filename and \
@@ -75,9 +235,10 @@ def upload_img():
             recommend(inputloc, extracted_features)
             os.remove(inputloc)
             image_path = "/result"
-            image_list =[os.path.join(image_path, file) for file in os.listdir(result)
+            global image_list
+            image_list = [os.path.join(image_path, file) for file in os.listdir(result)
                               if not file.startswith('.')]
-            
+            print(image_list)
             images = {
 			'image0':image_list[0],
             'image1':image_list[1],	
@@ -90,6 +251,8 @@ def upload_img():
 			'image8':image_list[8]
 		      }				
             return jsonify(images)
+
+
 
 #==============================================================================================================================
 #                                                                                                                              
