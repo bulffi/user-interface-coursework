@@ -159,15 +159,15 @@ def privious_favo():
         current_position = max(0,current_position)
         print(current_position)
         images = {
-			'image0':answer_list[0],
-            'image1':answer_list[1],	
-			'image2':answer_list[2],	
-			'image3':answer_list[3],	
-			'image4':answer_list[4],	
-			'image5':answer_list[5],	
-			'image6':answer_list[6],	
-			'image7':answer_list[7],	
-			'image8':answer_list[8]
+			'image0':answer_list[current_position + 0],
+            'image1':answer_list[current_position + 1],	
+			'image2':answer_list[current_position + 2],	
+			'image3':answer_list[current_position + 3],	
+			'image4':answer_list[current_position + 4],	
+			'image5':answer_list[current_position + 5],	
+			'image6':answer_list[current_position + 6],	
+			'image7':answer_list[current_position + 7],	
+			'image8':answer_list[current_position + 8]
 		    }
         
         print(images)				
@@ -188,34 +188,37 @@ def next_favo():
     if request.method == 'POST':
         if(len(favorite_list) < current_position):
             images = {
-			'image0':answer_list[0],
-            'image1':answer_list[1],	
-			'image2':answer_list[2],	
-			'image3':answer_list[3],	
-			'image4':answer_list[4],	
-			'image5':answer_list[5],	
-			'image6':answer_list[6],	
-			'image7':answer_list[7],	
-			'image8':answer_list[8]
+			'image0':answer_list[current_position - 9 + 0],
+            'image1':answer_list[current_position - 9 + 1],	
+			'image2':answer_list[current_position - 9 + 2],	
+			'image3':answer_list[current_position - 9 + 3],	
+			'image4':answer_list[current_position - 9 + 4],	
+			'image5':answer_list[current_position - 9 + 5],	
+			'image6':answer_list[current_position - 9 + 6],	
+			'image7':answer_list[current_position - 9 + 7],	
+			'image8':answer_list[current_position - 9 + 8]
 		    }
             print(current_position)
             print(images)			
             return jsonify(images)
 
         current_position += 9
-        current_position = min((len(favorite_list)//9)*9 ,current_position)				
+        current_position = min((len(favorite_list)//9)*9 ,current_position)
+        if(len(favorite_list)%9==0):
+            current_position = min(len(favorite_list)-9,current_position)
+				
         #print(answer_list)        
         print(current_position)
         images = {
-			'image0':answer_list[0],
-            'image1':answer_list[1],	
-			'image2':answer_list[2],	
-			'image3':answer_list[3],	
-			'image4':answer_list[4],	
-			'image5':answer_list[5],	
-			'image6':answer_list[6],	
-			'image7':answer_list[7],	
-			'image8':answer_list[8]
+			'image0':answer_list[current_position + 0],
+            'image1':answer_list[current_position + 1],	
+			'image2':answer_list[current_position + 2],	
+			'image3':answer_list[current_position + 3],	
+			'image4':answer_list[current_position + 4],	
+			'image5':answer_list[current_position + 5],	
+			'image6':answer_list[current_position + 6],	
+			'image7':answer_list[current_position + 7],	
+			'image8':answer_list[current_position + 8]
 		    }
         print(images)
         return jsonify(images)
