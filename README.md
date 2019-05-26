@@ -27,3 +27,10 @@
 2. searching result directory
 3. tag selection to refine result
 4. add favorite list
+
+## ass3 is about data visualization
+#### It requires Python library as follows
+1. Dash
+2. Pandas
+#### ass3 function added:
+1. Just basic
